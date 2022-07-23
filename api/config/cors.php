@@ -29,6 +29,7 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    //Access-Control-Allow-Credentials が true を返す
+    'supports_credentials' => true,
 
 ];

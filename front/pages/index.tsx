@@ -3,6 +3,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { ChangeEvent, useState } from 'react';
 import { RequiredMark } from '../components/RequiredMark';
 import { axiosApi } from '../lib/axios';
+import { useRouter } from 'next/router';
 
 // POSTデータの型を設置
 type LoginForm = {
@@ -31,6 +32,9 @@ const Home: NextPage = () => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
   };
 
+  //ログイン成功時の画面遷移
+  const router = useRouter();
+
   // ログイン
   const login = () => {
     axiosApi
@@ -43,6 +47,7 @@ const Home: NextPage = () => {
           //ログイン成功時
           .then((response: AxiosResponse) => {
             console.log(response.data);
+            router.push('/memos');
           })
           //ログイン失敗時
           .catch((err: AxiosError) => {

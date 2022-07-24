@@ -18,5 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// ログインAPI
+//ログインAPI
 Route::post('/login', [LoginController::class, 'login']);

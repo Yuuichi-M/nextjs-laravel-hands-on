@@ -14,6 +14,12 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        //マイページなどAPIから返却したユーザー情報を使って
+        //画面に表示することはないので、idだけを返却する
+        return [
+            'id' => $this->id
+        ];
     }
 }
+
+// APIからJSONを返却する際にはJSONの形式を明示的にするためにAPI Resourceを使う

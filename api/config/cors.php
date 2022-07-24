@@ -15,7 +15,8 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    //各APIへのリクエスト許可
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login'],
 
     'allowed_methods' => ['*'],
 
@@ -29,6 +30,7 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    //Access-Control-Allow-Credentials が true を返す
+    'supports_credentials' => true,
 
 ];

@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
+import { AxiosError, AxiosResponse } from 'axios';
 import { ChangeEvent, useState } from 'react';
 import { RequiredMark } from '../components/RequiredMark';
+import { axiosApi } from '../lib/axios';
 
 // POSTデータの型を設置
 type LoginForm = {
@@ -12,7 +14,6 @@ type LoginForm = {
 type Validation = LoginForm & { loginFailed: string };
 
 const Home: NextPage = () => {
-
   // POSTデータのstate
   const [loginForm, setLoginForm] = useState<LoginForm>({
     email: '',
@@ -30,7 +31,25 @@ const Home: NextPage = () => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
   };
 
-
+  // ログイン
+  const login = () => {
+    axiosApi
+      // CSRF保護の初期化
+      .get('/sanctum/csrf-cookie')
+      .then((res) => {
+        // ログイン処理
+        axiosApi
+          .post('/login', loginForm)
+          //ログイン成功時
+          .then((response: AxiosResponse) => {
+            console.log(response.data);
+          })
+          //ログイン失敗時
+          .catch((err: AxiosError) => {
+            console.log(err.response);
+          });
+      });
+    };
 
   return (
     <div className='w-2/3 mx-auto py-24'>
@@ -74,7 +93,11 @@ const Home: NextPage = () => {
           {/* <p className='py-3 text-red-500'>
             IDまたはパスワードが間違っています。
           </p> */}
-          <button className='bg-gray-700 text-gray-50 py-3 sm:px-20 px-10 rounded-xl cursor-pointer drop-shadow-md hover:bg-gray-600'>
+          {/* onClick={login}を追加 */}
+          <button
+            className='bg-gray-700 text-gray-50 py-3 sm:px-20 px-10 rounded-xl cursor-pointer drop-shadow-md hover:bg-gray-600'
+            onClick={login}
+          >
             ログイン
           </button>
         </div>

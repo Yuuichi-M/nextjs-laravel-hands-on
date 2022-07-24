@@ -1,7 +1,37 @@
 import type { NextPage } from 'next';
+import { ChangeEvent, useState } from 'react';
 import { RequiredMark } from '../components/RequiredMark';
 
+// POSTデータの型を設置
+type LoginForm = {
+  email: string;
+  password: string;
+};
+
+// バリデーションメッセージの型
+type Validation = LoginForm & { loginFailed: string };
+
 const Home: NextPage = () => {
+
+  // POSTデータのstate
+  const [loginForm, setLoginForm] = useState<LoginForm>({
+    email: '',
+    password: '',
+  });
+  // バリデーションメッセージのstate
+  const [validation, setValidation] = useState<Validation>({
+    email: '',
+    password: '',
+    loginFailed: '',
+  });
+
+  // POSTデータの更新
+  const updateLoginForm = (e: ChangeEvent<HTMLInputElement>) => {
+    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
+  };
+
+
+
   return (
     <div className='w-2/3 mx-auto py-24'>
       <div className='w-1/2 mx-auto border-2 px-12 py-16 rounded-2xl'>
@@ -11,9 +41,12 @@ const Home: NextPage = () => {
             <p>メールアドレス</p>
             <RequiredMark />
           </div>
+          {/* value属性とonChangeイベントを追加 */}
           <input
             className='p-2 border rounded-md w-full outline-none'
             name='email'
+            value={loginForm.email}
+            onChange={updateLoginForm}
           />
           {/* <p className='py-3 text-red-500'>必須入力です。</p> */}
         </div>
@@ -25,10 +58,13 @@ const Home: NextPage = () => {
           <small className='mb-2 text-gray-500 block'>
             8文字以上の半角英数字で入力してください
           </small>
+           {/* value属性とonChangeイベントを追加 */}
           <input
             className='p-2 border rounded-md w-full outline-none'
             name='password'
             type='password'
+            value={loginForm.password}
+            onChange={updateLoginForm}
           />
           {/* <p className='py-3 text-red-500'>
             8文字以上の半角英数字で入力してください。
